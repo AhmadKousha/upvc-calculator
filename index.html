@@ -228,18 +228,18 @@ function money(num){
     return Number(num).toLocaleString('en-US');
 }
 
-function addRow(size,grade,weight,price){
+function addRow(size,grade,weight,price,className){
 
-    if(weight===null){
-
-        return `
-        <tr>
+    return `
+    <tr class="${className}">
         <td>${size}</td>
         <td>${grade}</td>
-        <td colspan="2">تولید نمی شود</td>
-        </tr>`;
-    }
-
+        <td>${weight}</td>
+        <td>${price}</td>
+    </tr>
+    `;
+}
+مرحله ۳: رنگ‌ها را اضافه کن
     let branch=weight*price;
     let meter=branch/6;
 
