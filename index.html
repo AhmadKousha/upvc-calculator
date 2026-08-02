@@ -264,13 +264,13 @@ function calculate(){
 
     let html="";
 
-    pipes.forEach(p=>{
+   pipes.forEach(p=>{
 
-        html += addRow(p.size,"درجه 1",p.g1,p1);
-        html += addRow(p.size,"درجه 2",p.g2,p2);
-        html += addRow(p.size,"درجه 3",p.g3,p3);
+    html += addRow(p.size,"درجه 1",p.g1,p1,"grade1");
+    html += addRow(p.size,"درجه 2",p.g2,p2,"grade2");
+    html += addRow(p.size,"درجه 3",p.g3,p3,"grade3");
 
-    });
+});
 
     document.getElementById("result").innerHTML=html;
 }
