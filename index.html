@@ -1,24 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- ===== متا تگ‌های PWA ===== -->
+    <!-- متا تگ‌های PWA -->
     <meta name="theme-color" content="#1a3a5c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="UPVC Calc">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="UPVC Calculator">
-    <meta name="description" content="محاسبه‌گر قیمت لوله‌های UPVC - شرکت هگمتان پلاستیک الوند">
     
-    <!-- ===== لینک‌های PWA ===== -->
+    <!-- لینک manifest -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- آیکون‌های iOS -->
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="apple-touch-startup-image" href="icon-192.png">
     
+    <title>Hegmatan Plastic Alvan - UPVC Calculator</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- ... بقیه استایل‌ها ... -->
+   <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hegmatan Plastic Alvan - UPVC Calculator</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
     </script>
@@ -51,21 +60,6 @@
             padding: 32px 28px 36px;
             border: 1px solid rgba(255, 255, 255, 0.50);
             transition: all 0.3s ease;
-        }
-
-        /* حالت PWA */
-        @media all and (display-mode: standalone) {
-            .app-container {
-                border-radius: 0 !important;
-                max-width: 100% !important;
-                min-height: 100vh !important;
-                box-shadow: none !important;
-                border: none !important;
-            }
-            body {
-                padding: 0 !important;
-                background: #eef3f8 !important;
-            }
         }
 
         /* ===== هدر ===== */
@@ -753,37 +747,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ===== دکمه نصب PWA ===== */
-        .install-pwa-btn {
-            display: none;
-            width: 100%;
-            padding: 14px;
-            margin-top: 16px;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
-            color: white;
-            border: none;
-            border-radius: 18px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Arial', 'Tahoma', sans-serif;
-            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
-        }
-
-        .install-pwa-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 69, 0, 0.4);
-        }
-
-        .install-pwa-btn:active {
-            transform: scale(0.96);
-        }
-
-        .install-pwa-btn.show {
-            display: block;
-        }
-
         /* ================================================================
            فوتر
            ================================================================ */
@@ -1005,12 +968,6 @@
                 border-radius: 14px;
                 bottom: 16px;
             }
-
-            .install-pwa-btn {
-                font-size: 14px;
-                padding: 12px;
-                border-radius: 16px;
-            }
         }
 
         @media (max-width: 380px) {
@@ -1120,11 +1077,6 @@
                 <span>UPVC Calculator</span>
             </div>
         </div>
-
-        <!-- ===== دکمه نصب PWA ===== -->
-        <button class="install-pwa-btn" id="installPwaBtn">
-            📲 نصب برنامه روی گوشی
-        </button>
 
         <!-- ===== ورودی‌ها ===== -->
         <div class="input-card">
@@ -1281,10 +1233,6 @@
         let allRowsData = [];
         let isCalculating = false;
         let isCapturing = false;
-
-        // متغیرهای PWA
-        let deferredPrompt = null;
-        let isPwaInstalled = false;
 
         // ============================================================
         //  توابع
@@ -1625,104 +1573,6 @@
         }
 
         // ============================================================
-        //  توابع PWA
-        // ============================================================
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/service-worker.js')
-                        .then(function(registration) {
-                            console.log('✅ سرویس‌ورکر با موفقیت ثبت شد:', registration);
-                            
-                            // بررسی به‌روزرسانی
-                            registration.addEventListener('updatefound', function() {
-                                const newWorker = registration.installing;
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        showUpdateNotification();
-                                    }
-                                });
-                            });
-                            
-                            // بررسی نصب بودن PWA
-                            checkPwaInstallation();
-                        })
-                        .catch(function(error) {
-                            console.log('⚠️ خطا در ثبت سرویس‌ورکر:', error);
-                        });
-                });
-            }
-        }
-
-        function checkPwaInstallation() {
-            // بررسی اینکه آیا برنامه در حالت standalone اجرا می‌شود
-            if (window.matchMedia('(display-mode: standalone)').matches || 
-                window.navigator.standalone || 
-                document.referrer.includes('android-app://')) {
-                isPwaInstalled = true;
-                document.getElementById('installPwaBtn').classList.remove('show');
-                console.log('✅ برنامه در حالت PWA اجرا می‌شود');
-            }
-        }
-
-        function showUpdateNotification() {
-            const toast = document.getElementById('toast');
-            toast.textContent = '🔄 نسخه جدید برنامه موجود است! برای به‌روزرسانی کلیک کنید.';
-            toast.classList.add('show');
-            toast.style.background = '#1a3a5c';
-            toast.style.color = 'white';
-            toast.style.cursor = 'pointer';
-            toast.onclick = function() {
-                window.location.reload();
-            };
-            setTimeout(() => {
-                toast.classList.remove('show');
-                toast.onclick = null;
-            }, 8000);
-        }
-
-        function setupPwaInstall() {
-            const installBtn = document.getElementById('installPwaBtn');
-            
-            // گوش دادن به رویداد beforeinstallprompt
-            window.addEventListener('beforeinstallprompt', function(e) {
-                e.preventDefault();
-                deferredPrompt = e;
-                installBtn.classList.add('show');
-                console.log('✅ رویداد نصب PWA دریافت شد');
-            });
-
-            // کلیک روی دکمه نصب
-            installBtn.addEventListener('click', async function() {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const result = await deferredPrompt.userChoice;
-                    console.log('نتیجه نصب:', result);
-                    
-                    if (result.outcome === 'accepted') {
-                        showToast('✅ برنامه با موفقیت نصب شد!');
-                        installBtn.classList.remove('show');
-                        isPwaInstalled = true;
-                    } else {
-                        showToast('نصب برنامه لغو شد.');
-                    }
-                    deferredPrompt = null;
-                } else {
-                    // اگر مرورگر از نصب پشتیبانی نمی‌کند
-                    showToast('لطفاً از مرورگر Chrome یا Samsung Internet استفاده کنید.');
-                }
-            });
-
-            // گوش دادن به رویداد نصب موفق
-            window.addEventListener('appinstalled', function(e) {
-                console.log('✅ برنامه با موفقیت نصب شد!');
-                isPwaInstalled = true;
-                installBtn.classList.remove('show');
-                showToast('✅ برنامه نصب شد!');
-            });
-        }
-
-        // ============================================================
         //  رویدادها
         // ============================================================
         document.querySelectorAll('.calc-btn, .btn-group-bottom button').forEach(btn => {
@@ -1752,33 +1602,9 @@
             });
         });
 
-        // ============================================================
-        //  مقداردهی اولیه
-        // ============================================================
         window.addEventListener('DOMContentLoaded', () => {
-            // ثبت سرویس‌ورکر
-            registerServiceWorker();
-            
-            // تنظیم نصب PWA
-            setupPwaInstall();
-            
-            // محاسبه اولیه
             setTimeout(calculate, 400);
-            
-            // بررسی نمایش دکمه نصب در PWA
-            checkPwaInstallation();
         });
-
-        // ============================================================
-        //  نمایش دکمه نصب در صورت نصب نبودن
-        // ============================================================
-        // بررسی هر 5 ثانیه یکبار برای تغییر حالت
-        setInterval(() => {
-            if (window.matchMedia('(display-mode: standalone)').matches && !isPwaInstalled) {
-                isPwaInstalled = true;
-                document.getElementById('installPwaBtn').classList.remove('show');
-            }
-        }, 5000);
     </script>
 
 </body>
