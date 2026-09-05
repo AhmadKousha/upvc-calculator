@@ -1,0 +1,39 @@
+{
+    "name": "UPVC Calculator - Hegmatan Plastic Alvan",
+    "short_name": "UPVC Calc",
+    "description": "محاسبه‌گر قیمت لوله‌های UPVC - هگمتان پلاستیک الوند",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#eef3f8",
+    "theme_color": "#1a3a5c",
+    "orientation": "portrait",
+    "categories": ["business", "productivity", "utilities"],
+    "lang": "fa",
+    "dir": "rtl",
+    "icons": [
+        {
+            "src": "icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
